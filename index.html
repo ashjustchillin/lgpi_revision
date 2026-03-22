@@ -326,6 +326,7 @@ body{font-family:var(--sf);background:var(--bg);color:var(--text);-webkit-font-s
   <!-- MODULE -->
   <div class="page" id="page-module">
     <div class="nav-breadcrumb" id="mod-breadcrumb"></div>
+    <button class="back-btn" id="back-to-home"><span class="back-arr">←</span><span class="back-lbl">Tous les modules</span></button>
     <div class="mod-header">
       <span class="mod-pill" id="mod-pill"><span class="dot" id="mod-dot"></span><span id="mod-pill-label"></span></span>
       <div class="mod-header-right">
@@ -359,6 +360,7 @@ body{font-family:var(--sf);background:var(--bg);color:var(--text);-webkit-font-s
   <!-- FICHE -->
   <div class="page" id="page-fiche">
     <div class="nav-breadcrumb" id="fiche-breadcrumb-nav"></div>
+    <button class="back-btn" id="back-to-module"><span class="back-arr">←</span><span class="back-lbl" id="back-module-lbl">Retour</span></button>
     <div class="fiche-module-label" id="fiche-mod-label"></div>
     <div class="fiche-header">
       <div class="fiche-title" id="fiche-title"></div>
@@ -381,6 +383,7 @@ body{font-family:var(--sf);background:var(--bg);color:var(--text);-webkit-font-s
   <!-- FORMULAIRE FICHE -->
   <div class="page" id="page-form">
     <div class="nav-breadcrumb" id="form-breadcrumb"></div>
+    <button class="back-btn" id="back-from-form"><span class="back-arr">←</span><span class="back-lbl">Annuler</span></button>
     <div class="form-card">
       <div class="form-section">
         <div class="form-section-title">Informations</div>
@@ -435,6 +438,7 @@ body{font-family:var(--sf);background:var(--bg);color:var(--text);-webkit-font-s
   <!-- REVISION -->
   <div class="page" id="page-revision">
     <div class="nav-breadcrumb" id="rev-breadcrumb"></div>
+    <button class="back-btn" id="back-from-revision"><span class="back-arr">←</span><span class="back-lbl">Retour</span></button>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1.2rem">
       <div>
         <div style="font-size:1.2rem;font-weight:600;margin-bottom:4px">🃏 Mode revision</div>
@@ -984,20 +988,21 @@ function flipCard(){
 }
 
 // EVENTS
-document.getElementById("logo-btn").addEventListener("click",goHome);
-document.getElementById("btn-revision").addEventListener("click",openRevision);
-document.getElementById("back-from-revision").addEventListener("click",goHome);
-document.getElementById("back-to-home")?.addEventListener("click",goHome);
-document.getElementById("back-to-module")?.addEventListener("click",()=>goModule(curMod));
-document.getElementById("back-from-form")?.addEventListener("click",()=>{if(editingId)goFiche(editingId);else goModule(curMod);});
-document.getElementById("form-cancel").addEventListener("click",()=>{if(editingId)goFiche(editingId);else goModule(curMod);});
-document.getElementById("back-from-mod-form").addEventListener("click",goHome);
-document.getElementById("mod-form-cancel").addEventListener("click",goHome);
-document.getElementById("btn-new-fiche").addEventListener("click",()=>openForm(null));
-document.getElementById("btn-edit-fiche").addEventListener("click",()=>openForm(curFicheId));
-document.getElementById("search-input").addEventListener("input",renderCards);
-document.getElementById("sort-select").addEventListener("change",renderCards);
-document.getElementById("btn-delete-fiche").addEventListener("click",async()=>{
+const $=id=>document.getElementById(id);
+$("logo-btn")?.addEventListener("click",goHome);
+$("btn-revision")?.addEventListener("click",openRevision);
+$("back-from-revision")?.addEventListener("click",goHome);
+$("back-to-home")?.addEventListener("click",goHome);
+$("back-to-module")?.addEventListener("click",()=>goModule(curMod));
+$("back-from-form")?.addEventListener("click",()=>{if(editingId)goFiche(editingId);else goModule(curMod);});
+$("form-cancel")?.addEventListener("click",()=>{if(editingId)goFiche(editingId);else goModule(curMod);});
+$("back-from-mod-form")?.addEventListener("click",goHome);
+$("mod-form-cancel")?.addEventListener("click",goHome);
+$("btn-new-fiche")?.addEventListener("click",()=>openForm(null));
+$("btn-edit-fiche")?.addEventListener("click",()=>openForm(curFicheId));
+$("search-input")?.addEventListener("input",renderCards);
+$("sort-select")?.addEventListener("change",renderCards);
+$("btn-delete-fiche")?.addEventListener("click",async()=>{
   if(!confirm("Supprimer cette fiche ?"))return;
   await fbDeleteNote(curFicheId); goModule(curMod);
 });

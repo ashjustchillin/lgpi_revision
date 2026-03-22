@@ -450,7 +450,7 @@ body{font-family:var(--sf);background:var(--bg);color:var(--text);-webkit-font-s
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, initializeFirestore, persistentLocalCache, collection, doc, onSnapshot, addDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, onSnapshot, addDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const fbConfig = {
   apiKey: "AIzaSyDA8BFh3hjfdUf3uD-DjTt94lAzK9V_9Yc",
@@ -461,9 +461,7 @@ const fbConfig = {
   appId: "1:230241902566:web:b8b62a98a07d3e3dbf4027"
 };
 const fbApp = initializeApp(fbConfig);
-const db = initializeFirestore(fbApp, {
-  localCache: persistentLocalCache()
-});
+const db = getFirestore(fbApp);
 
 const TYPES = [
   {id:"procedure", label:"Procedure", emoji:"📋", bg:"#E8F4FD", color:"#1A7FAA"},
@@ -648,6 +646,10 @@ function updatePlanning() {
 function initPlanning(){buildWeekGrid();updatePlanning();setInterval(updatePlanning,1000);setInterval(buildWeekGrid,60000);}
 
 // FIREBASE
+// Afficher la page immediatement sans attendre Firebase
+renderHome();
+showPage("page-home");
+
 function startListeners() {
   onSnapshot(collection(db,"modules"), snap => {
     mods = snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
@@ -1009,8 +1011,9 @@ document.getElementById("mod-form-save").addEventListener("click",async()=>{
   goHome();
 });
 
-// INIT
-startListeners(); initPlanning();
+// INIT — planning immediat, Firebase en arriere-plan
+initPlanning();
+startListeners();
 // Firebase en arriere-plan - pas de blocage au chargement
 </script>
 </body>

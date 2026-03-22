@@ -1022,12 +1022,15 @@ document.getElementById("mod-form-save").addEventListener("click",async()=>{
 // INIT
 startListeners(); initPlanning();
 setTimeout(()=>{
-  if(document.getElementById("loading-screen").style.display!=="none"){
-    document.getElementById("loading-screen").style.display="none";
+  const ls=document.getElementById("loading-screen");
+  if(ls.style.display!=="none"){
+    ls.style.display="none";
     document.getElementById("app").style.display="";
     showPage("page-home");
+    setSyncState("error");
+    showToast("Firebase hors ligne - donnees peut-etre indisponibles");
   }
-},3000);
+},1200);
 </script>
 </body>
 </html>

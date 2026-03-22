@@ -450,7 +450,7 @@ body{font-family:var(--sf);background:var(--bg);color:var(--text);-webkit-font-s
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, onSnapshot, addDoc, setDoc, deleteDoc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, initializeFirestore, persistentLocalCache, collection, doc, onSnapshot, addDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const fbConfig = {
   apiKey: "AIzaSyDA8BFh3hjfdUf3uD-DjTt94lAzK9V_9Yc",
@@ -461,12 +461,8 @@ const fbConfig = {
   appId: "1:230241902566:web:b8b62a98a07d3e3dbf4027"
 };
 const fbApp = initializeApp(fbConfig);
-const db = getFirestore(fbApp);
-
-// Cache local - chargement instantane apres la premiere visite
-enableIndexedDbPersistence(db).catch(err => {
-  if (err.code === "failed-precondition") console.warn("Cache: plusieurs onglets ouverts");
-  else if (err.code === "unimplemented") console.warn("Cache: navigateur non supporte");
+const db = initializeFirestore(fbApp, {
+  localCache: persistentLocalCache()
 });
 
 const TYPES = [
